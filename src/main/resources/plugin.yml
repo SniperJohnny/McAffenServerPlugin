@@ -1,0 +1,48 @@
+name: SniperJohnny_server_plugin_mcaffe_version
+version: 1.0.0
+main: io.sniperjohnny.github.ServerPlugin
+author: SniperJohnny
+website: https://papermc.io
+api-version: 1.21
+
+commands:
+  opcustomitem:
+    permission: "affenmc.custom_op_items"
+    description: Gives op Custom server exclusive Items.
+    aliases:
+      - opitems
+      - customitems
+      - opci
+      - ci
+  endit:
+    permission: "affenmc.endit"
+    description: Beende dein Leiden.
+    aliases:
+      - leiden
+      - beendees
+
+
+  fliegen:
+    permission: "affenmc.fly"
+    description: lässt dich fliegen
+    aliases:
+    - afly
+    - f
+  maxh:
+    permission: "affenmc.maxh"
+    description: ändert max herzen
+    aliases:
+      - hmax
+      - maxhealth
+      - setmaxhealth
+      - hs
+  adminshop:
+    permission: "affenmc.adminshop"
+    description: ist ein freier shop für staff
+    aliases:
+      - as
+      - admins
+      - ashop
+      - staffs
+      - sshop
+      - staffshop
