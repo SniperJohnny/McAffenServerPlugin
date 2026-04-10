@@ -5,6 +5,7 @@ import io.sniperjohnny.github.commands.CustomItemGiver;
 import net.kyori.adventure.text.Component;
 import net.kyori.adventure.text.event.HoverEvent;
 import net.kyori.adventure.text.format.NamedTextColor;
+import net.kyori.adventure.text.format.TextDecoration;
 import org.bukkit.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.LivingEntity;
@@ -21,7 +22,7 @@ import org.bukkit.entity.ArmorStand;
 
 
 public class DamageListener implements Listener {
-
+    public static ArmorStand stand;
     private static final int MAX_CURSE_STACKS = 5;
 
     // ------------------------------------------------------------
@@ -95,64 +96,78 @@ public class DamageListener implements Listener {
 
         Bukkit.getScheduler().runTaskTimer(ServerPlugin.getInstance(), task -> {
 
-            if (!entity.isValid() || entity.isDead()) {
+            if (!entity.isValid() || entity.getHealth() <= 0) {
                 task.cancel();
                 return;
             }
 
             int stacks = entity.getPersistentDataContainer().getOrDefault(stackKey, PersistentDataType.INTEGER, 0);
 
-            // Add inscription
-            spawnInscription(entity);
+            for (int i = 0; i < 8; i++) { // 8 Male pro Tick
+                spawnInscription(entity);
+            }
 
             stacks++;
             entity.getPersistentDataContainer().set(stackKey, PersistentDataType.INTEGER, stacks);
 
-            // Fully covered → kill
             if (stacks >= MAX_CURSE_STACKS) {
                 killCursedEntity(entity);
+                stand.remove();
                 task.cancel();
             }
 
-        }, 0, 10); // every 10 ticks (0.5 seconds)
+        }, 0, 10);
     }
+    private static final String[] CURSE_SYMBOLS = {
+            "ᚾ", "ᛟ", "ᛉ", "ᚲ", "ᚱ", "ᛞ", "ᛇ", "ᚺ",
+            "々", "〆", "ゑ", "ゐ",
+            "✦", "✧", "✶", "✷", "✹", "✺"
+    };
 
-    private void spawnInscription(LivingEntity entity) {
+    void spawnInscription(LivingEntity entity) {
 
-        Location base = entity.getLocation().add(0, 1.0, 0);
+        // Position am Oberkörper
+        double height = entity.getHeight() * 0.7;
+        Location base = entity.getLocation().add(0, height, 0);
 
-        double x = (Math.random() - 0.5) * 0.6;
-        double y = Math.random() * 1.4;
-        double z = (Math.random() - 0.5) * 0.6;
+        // Chaotische Verteilung wie im Anime
+        double x = (Math.random() - 0.5) * 0.8;
+        double y = (Math.random() - 0.3) * 0.6;
+        double z = (Math.random() - 0.5) * 0.8;
 
         Location loc = base.clone().add(x, y, z);
 
-        ArmorStand stand = loc.getWorld().spawn(loc, ArmorStand.class, as -> {
+        // Zufälliges dämonisches Symbol
+        String symbol = CURSE_SYMBOLS[(int)(Math.random() * CURSE_SYMBOLS.length)];
+
+        stand = loc.getWorld().spawn(loc, ArmorStand.class, as -> {
             as.setInvisible(true);
-            as.setMarker(true);
-            as.setCustomNameVisible(true);
-            as.customName(Component.text("§4§l✦"));
-            as.setGravity(false);
             as.setSmall(true);
+            as.setGravity(false);
+            as.setMarker(false); // WICHTIG: Marker aus, sonst verschwinden sie oder buggen
+            as.setCustomNameVisible(true);
+
+            as.customName(
+                    Component.text(symbol)
+                            .color(NamedTextColor.BLACK) // SCHWARZ wie im Anime
+                            .decorate(TextDecoration.BOLD)
+
+            );
+            Bukkit.getScheduler().runTaskLater(ServerPlugin.getInstance(), () -> {
+                System.out.println("stand removed");
+                stand.remove();
+                as.remove();
+            }, 50);
         });
 
-        // Float upward
-        Bukkit.getScheduler().runTaskTimer(ServerPlugin.getInstance(), task -> {
-            if (!stand.isValid()) {
-                task.cancel();
-                return;
-            }
-            stand.teleport(stand.getLocation().add(0, 0.01, 0));
-        }, 1, 1);
-
-        // Remove after 1.5 seconds
-        Bukkit.getScheduler().runTaskLater(ServerPlugin.getInstance(), stand::remove, 30);
+        // WICHTIG:
+        // Keine Bewegung, kein Entfernen.
+        // Die Male bleiben dauerhaft am Körper kleben.
     }
-
     private void killCursedEntity(LivingEntity entity) {
 
         World world = entity.getWorld();
-
+        stand.remove();
         world.spawnParticle(Particle.SOUL_FIRE_FLAME, entity.getLocation(), 40, 0.5, 1, 0.5, 0.02);
         world.spawnParticle(Particle.SOUL, entity.getLocation(), 40, 0.5, 1, 0.5, 0.02);
 

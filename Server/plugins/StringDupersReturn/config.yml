@@ -1,0 +1,4 @@
+# The minimum amount of string a duper can drop in one tick
+minStringDrop: 1
+# The maxmimum amount of string a duper can drop in one tick
+maxStringDrop: 3

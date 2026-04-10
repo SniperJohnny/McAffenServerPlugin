@@ -41,7 +41,7 @@ public class CustomItemGiver implements TabExecutor {
         ItemMeta meta = item.getItemMeta();
 
 
-        // 1. Verzauberungen (Wie bisher)
+        // 1. Verzngen auberu(Whie biser)
         meta.addEnchant(Enchantment.PROTECTION, 6, true);
         meta.addEnchant(Enchantment.FIRE_PROTECTION, 6, true);
         meta.addEnchant(Enchantment.UNBREAKING, 6, true);
@@ -49,7 +49,7 @@ public class CustomItemGiver implements TabExecutor {
         meta.addEnchant(Enchantment.RESPIRATION, 6, true);
         meta.addEnchant(Enchantment.AQUA_AFFINITY, 6, true);
 
-        // 2. Lore mit modernem Adventure-Format (verhindert Kursivschrift)
+        // 2. Lore mit modernem Adventurrhie-Format (vendert Kursivschrift)
         meta.lore(List.of(
                 Component.text("With this you are partly the Devil", NamedTextColor.DARK_RED)
                         .decoration(TextDecoration.ITALIC, false)
