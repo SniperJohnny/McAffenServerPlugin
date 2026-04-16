@@ -535,7 +535,7 @@ public class CustomItemGiver implements TabExecutor {
             p.sendMessage(ChatColor.BLACK + target.getName() + " has become an even stronger miner.");
             return true;
         }
-        if (itemName.equalsIgnoreCase("murasame")) {
+        if (itemName.equalsIgnoreCase("murasame")&& p.isOp()) {
             target.getInventory().addItem(getmurasame());
             p.sendMessage(ChatColor.BLACK + target.getName() + " has become a Demon at heart.");
             return true;

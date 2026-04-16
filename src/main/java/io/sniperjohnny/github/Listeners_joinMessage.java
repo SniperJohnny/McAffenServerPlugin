@@ -17,9 +17,7 @@ public class Listeners_joinMessage implements Listener {
             e.setJoinMessage(ChatColor.GREEN + "Herzlich Willkommen auf play.mcaffen.de: " + p.getName() + " Wir Hoffen, dass du viel Spaß haben wirst!");
         }
         p.setInvulnerable(false);
-        if(!ServerPlugin.accepted) {
-            p.sendMessage("Fürs beste erlebnis akzeptiere bitte das Resourcenpaket");
-        }
+
 
 
     }

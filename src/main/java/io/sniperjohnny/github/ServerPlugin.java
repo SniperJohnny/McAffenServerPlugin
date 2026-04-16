@@ -20,8 +20,9 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
 public class ServerPlugin extends JavaPlugin implements Listener {
-    public static boolean accepted;
+
     private static ServerPlugin instance;
+   /* public static boolean accepted;
     private static ResourcePackInfo packInfo;
     @Override
     public void onLoad() {
@@ -58,6 +59,7 @@ public class ServerPlugin extends JavaPlugin implements Listener {
 
 
     }
+    */
     @Override
     public void onDisable() {
         //runs third
