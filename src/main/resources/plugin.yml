@@ -6,6 +6,9 @@ website: https://papermc.io
 api-version: 1.21
 
 commands:
+chemie:
+permission: "john.chemie.schule"
+description: "Chemie Schule notizen"
   opcustomitem:
     permission: "affenmc.custom_op_items"
     description: Gives op Custom server exclusive Items.
